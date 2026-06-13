@@ -1,0 +1,49 @@
+name: CI
+
+# Runs on every PR. Two gates:
+#   1. validate  — every game.json is well-formed and its game has an index.html.
+#   2. rebase    — the branch is rebased on the latest main, with no merge commits.
+# Both must pass before a PR can be merged (enforced by branch protection).
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Validate games
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate game manifests and build
+        run: python3 build.py --check
+
+  rebase:
+    name: Rebased on main
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check branch is rebased on the latest main
+        run: |
+          git fetch origin main
+          # No merge commits between main and this branch — history must be linear.
+          if [ -n "$(git rev-list --merges origin/main..HEAD)" ]; then
+            echo "::error::This branch contains a merge commit. We use rebase, not merge."
+            echo ""
+            echo "Ask your agent: \"rebase my branch on the latest main\"."
+            echo "By hand:  git fetch origin && git rebase origin/main && git push --force-with-lease"
+            exit 1
+          fi
+          # The branch must sit directly on top of the current main tip.
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            echo "::error::main has moved on since you branched. Rebase before merging."
+            echo ""
+            echo "Ask your agent: \"rebase my branch on the latest main\"."
+            echo "By hand:  git fetch origin && git rebase origin/main && git push --force-with-lease"
+            exit 1
+          fi
+          echo "Branch is rebased on the latest main. 👍"

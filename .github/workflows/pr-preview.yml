@@ -1,0 +1,46 @@
+name: PR preview
+
+# Builds the site for an open PR and publishes it to
+# https://cnellington.github.io/playground/pr-preview/pr-<N>/ so the change can
+# be playtested before it is merged. The preview is removed when the PR closes.
+#
+# Note: previews work for PRs from branches in this repo (collaborators). PRs
+# from forks cannot deploy, because GitHub withholds write tokens from forks for
+# security. Add contributors as collaborators so their agents push branches
+# here rather than forking — see CONTRIBUTING.md.
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: pr-preview-${{ github.event.number }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    # Skip fork PRs: they have no write token, so a deploy would only fail noisily.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build _site
+        # On a "closed" event we are only tearing the preview down, so the build
+        # is not needed — but it is cheap and keeps the step list simple.
+        if: github.event.action != 'closed'
+        run: python3 build.py
+
+      - name: Deploy / update / remove preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: _site
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
