@@ -26,6 +26,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          # Check out the real branch tip, not the synthetic PR merge commit that
+          # checkout uses by default — otherwise HEAD always looks like a merge.
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
       - name: Check branch is rebased on the latest main
         run: |
