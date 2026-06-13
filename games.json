@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "title": "Tarrytown",
+    "slug": "tarrytown",
+    "tagline": "A West Austin Critter Quest",
+    "description": "A tiny Pokemon-style overworld and turn-based battler set in the live oaks and limestone of West Austin. Pick a starter on the porch, roam Tarrytown, befriend local critters with breakfast tacos, and earn the Tower Badge.",
+    "authors": [
+      "Caleb"
+    ],
+    "added": "2026-06-13",
+    "icon": "\ud83c\udf33",
+    "thumbnail": "thumbnail.png",
+    "tags": [
+      "rpg",
+      "pokemon-like",
+      "pixel-art"
+    ],
+    "path": "games/tarrytown/"
+  }
+]

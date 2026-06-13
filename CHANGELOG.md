@@ -15,5 +15,6 @@ dating sections as you go, whichever is easier.
 
 ## 2026-06-13
 
+- tarrytown: Added Tarrytown, a West Austin critter-catching quest. First game.
 - site: Launched The Playground: a game library, per-game pages, PR preview
   deploys, and rebase-enforced CI.
