@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Playground</title>
+<meta name="description" content="A little arcade of web games.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-head">
+    <div class="logo">the <span class="mark">playground</span></div>
+    <span class="tagline">a little arcade of web games</span>
+    <nav class="topnav">
+      <a href="https://github.com/cnellington/playground">Add a game</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="library" class="grid" aria-label="Game library">
+      <p class="loading">Loading games…</p>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    Anyone can add a game. See
+    <a href="https://github.com/cnellington/playground/blob/main/CONTRIBUTING.md">how to contribute</a>.
+  </footer>
+
+<script>
+/* The library renders entirely from games.json, which build.py generates by
+   aggregating every games/<slug>/game.json. Adding a game never touches this
+   file — that is what keeps merges painless for non-technical contributors. */
+const library = document.getElementById('library');
+
+function card(game) {
+  const wrap = document.createElement('div');
+  wrap.className = 'card';
+
+  // The art + title link to the game itself.
+  const main = document.createElement('a');
+  main.className = 'card-main';
+  main.href = game.path;
+
+  const art = document.createElement('div');
+  art.className = 'card-art';
+  if (game.thumbnail) {
+    const img = document.createElement('img');
+    img.src = game.path + game.thumbnail;
+    img.alt = game.title + ' screenshot';
+    img.loading = 'lazy';
+    art.appendChild(img);
+  } else {
+    art.classList.add('emoji');
+    art.textContent = game.icon || '🎮';
+  }
+
+  const body = document.createElement('div');
+  body.className = 'card-body';
+  const h = document.createElement('h2');
+  h.textContent = game.title;
+  const tg = document.createElement('p');
+  tg.className = 'card-tagline';
+  tg.textContent = game.tagline || '';
+  body.append(h, tg);
+
+  main.append(art, body);
+  wrap.appendChild(main);
+
+  // A game's changelog lives right next to it; link to it from the card.
+  if (game.hasChangelog) {
+    const cl = document.createElement('a');
+    cl.className = 'card-cl';
+    cl.href = game.path + 'changelog.html';
+    cl.textContent = "What's changed";
+    wrap.appendChild(cl);
+  }
+
+  return wrap;
+}
+
+fetch('games.json')
+  .then(r => r.json())
+  .then(games => {
+    library.innerHTML = '';
+    if (!games.length) {
+      library.innerHTML = '<p class="loading">No games yet. Be the first to add one!</p>';
+      return;
+    }
+    games.forEach(g => library.appendChild(card(g)));
+  })
+  .catch(() => {
+    library.innerHTML = '<p class="loading">Could not load the game list. Try a hard refresh.</p>';
+  });
+</script>
+</body>
+</html>
