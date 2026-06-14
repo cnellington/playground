@@ -43,10 +43,12 @@ goes live. Merging to `main` publishes it.
    (`YYYY-MM-DD`). Do not add authorship or tags unless asked.
 
 4. Keep a `games/<slug>/changelog.md` for the game and update it on every
-   change. The changelog is game-specific: each game owns its own file, and the
-   changelog page renders one section per game. Add a line under the top section
-   describing what you did, written for a human reader. Newest entries at the
-   top. A new game starts this file with its first entry.
+   change. The changelog is game-specific: each game owns its own file. The
+   build turns it into a changelog page right next to the game
+   (`games/<slug>/changelog.html`), linked from the game's card; there is no
+   site-wide changelog. Add a line under the top section describing what you did,
+   written for a human reader. Newest entries at the top. A new game starts this
+   file with its first entry.
 
 5. Never commit to `main` directly, and never merge with a merge commit. Work on
    a branch and open a pull request. We keep linear history and require the

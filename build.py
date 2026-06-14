@@ -82,11 +82,12 @@ def validate_game(game_dir: Path) -> dict | None:
     # Surface the path the library page links to; keep manifest self-contained.
     meta["path"] = f"games/{slug}/"
 
-    # Per-game changelog: an optional changelog.md in the game's own folder. We
-    # inline it into the manifest so the changelog page is a single fetch and so
-    # each game owns its history (no shared file for contributors to collide on).
+    # Per-game changelog: an optional changelog.md in the game's own folder. Each
+    # game owns its history (no shared file for contributors to collide on) and
+    # gets its own changelog page next to the game. The card links to it when one
+    # exists; the flag tells the library whether to show that link.
     changelog_path = game_dir / "changelog.md"
-    meta["changelog"] = changelog_path.read_text().strip() if changelog_path.exists() else ""
+    meta["hasChangelog"] = changelog_path.exists() and bool(changelog_path.read_text().strip())
 
     return meta
 
@@ -116,10 +117,7 @@ def build(manifests: list[dict]) -> None:
     SITE_DIR.mkdir()
 
     # Library shell + shared assets.
-    for name in ["index.html", "changelog.html"]:
-        src = ROOT / name
-        if src.exists():
-            shutil.copy2(src, SITE_DIR / name)
+    shutil.copy2(ROOT / "index.html", SITE_DIR / "index.html")
     if (ROOT / "assets").exists():
         shutil.copytree(ROOT / "assets", SITE_DIR / "assets")
 
@@ -129,6 +127,12 @@ def build(manifests: list[dict]) -> None:
     # Every game folder, verbatim.
     if GAMES_DIR.exists():
         shutil.copytree(GAMES_DIR, SITE_DIR / "games")
+
+    # Drop a per-game changelog page next to each game that has a changelog.md.
+    template = (ROOT / "templates" / "game-changelog.html").read_text()
+    for meta in manifests:
+        if meta["hasChangelog"]:
+            (SITE_DIR / "games" / meta["slug"] / "changelog.html").write_text(template)
 
     print(f"Built _site/ with {len(manifests)} game(s): {', '.join(m['slug'] for m in manifests)}")
 
