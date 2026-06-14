@@ -51,7 +51,7 @@ playground/
 ```
 
 Each game's `changelog.md` becomes a changelog page right next to the game,
-linked from its card on the front page. There is no site-wide changelog, so
+linked just below its card on the front page. There is no site-wide changelog, so
 each game's history stays its own.
 
 Each game is fully self-contained in its own folder, including its own
