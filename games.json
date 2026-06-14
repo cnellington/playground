@@ -8,6 +8,6 @@
     "icon": "\ud83c\udf33",
     "thumbnail": "thumbnail.png",
     "path": "games/tarrytown/",
-    "changelog": "## 2026-06-13\n\n- Added Tarrytown: explore a West Austin overworld, pick a starter, befriend\n  critters with breakfast tacos, and earn the Tower Badge from the UT gym."
+    "hasChangelog": true
   }
 ]
