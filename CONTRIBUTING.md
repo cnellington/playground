@@ -41,7 +41,6 @@ secret keys. If your idea needs those, the page cannot host it as-is.
 ```
 playground/
 ├── index.html          the front page (a grid of all games), generated, do not hand-edit the list
-├── changelog.html      shows each game's changelog, grouped by game
 ├── games/
 │   └── <your-game>/
 │       ├── index.html   your game
@@ -50,6 +49,10 @@ playground/
 │       └── thumbnail.png optional cover image
 └── build.py             assembles the site; CI runs it
 ```
+
+Each game's `changelog.md` becomes a changelog page right next to the game,
+linked from its card on the front page. There is no site-wide changelog, so
+each game's history stays its own.
 
 Each game is fully self-contained in its own folder, including its own
 `changelog.md`. You only ever add or edit your own folder, so changes never

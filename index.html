@@ -15,7 +15,6 @@
     <div class="logo">the <span class="mark">playground</span></div>
     <span class="tagline">a little arcade of web games</span>
     <nav class="topnav">
-      <a href="changelog.html">Changelog</a>
       <a href="https://github.com/cnellington/playground">Add a game</a>
     </nav>
   </header>
@@ -38,9 +37,13 @@
 const library = document.getElementById('library');
 
 function card(game) {
-  const a = document.createElement('a');
-  a.className = 'card';
-  a.href = game.path;
+  const wrap = document.createElement('div');
+  wrap.className = 'card';
+
+  // The art + title link to the game itself.
+  const main = document.createElement('a');
+  main.className = 'card-main';
+  main.href = game.path;
 
   const art = document.createElement('div');
   art.className = 'card-art';
@@ -64,8 +67,19 @@ function card(game) {
   tg.textContent = game.tagline || '';
   body.append(h, tg);
 
-  a.append(art, body);
-  return a;
+  main.append(art, body);
+  wrap.appendChild(main);
+
+  // A game's changelog lives right next to it; link to it from the card.
+  if (game.hasChangelog) {
+    const cl = document.createElement('a');
+    cl.className = 'card-cl';
+    cl.href = game.path + 'changelog.html';
+    cl.textContent = "What's changed";
+    wrap.appendChild(cl);
+  }
+
+  return wrap;
 }
 
 fetch('games.json')
