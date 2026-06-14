@@ -66,6 +66,7 @@ main { flex: 1; width: 100%; max-width: 1100px; margin: 0 auto; }
 }
 .loading { color: var(--muted); padding: 48px 0; text-align: center; grid-column: 1 / -1; }
 
+.cell { display: flex; flex-direction: column; }
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -73,24 +74,23 @@ main { flex: 1; width: 100%; max-width: 1100px; margin: 0 auto; }
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  color: var(--text);
   transition: transform .14s ease, border-color .14s ease, background .14s ease;
 }
 .card:hover {
   transform: translateY(-4px);
   border-color: var(--border-hi);
   background: var(--surface-hi);
+  text-decoration: none;
 }
-.card-main { display: flex; flex-direction: column; color: var(--text); }
-.card-main:hover { text-decoration: none; }
-.card-cl {
-  border-top: 1px solid var(--border);
-  padding: 10px 18px;
+.game-cl {
+  align-self: flex-start;
+  margin-top: 10px;
   font-size: 14px;
   font-weight: 500;
   color: var(--muted);
 }
-.card-cl::before { content: "↻ "; }
-.card-cl:hover { color: var(--accent); text-decoration: none; background: rgba(139,147,255,0.06); }
+.game-cl:hover { color: var(--accent); }
 .card-art {
   aspect-ratio: 16 / 10;
   background: #0b0c10;

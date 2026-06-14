@@ -45,7 +45,7 @@ goes live. Merging to `main` publishes it.
 4. Keep a `games/<slug>/changelog.md` for the game and update it on every
    change. The changelog is game-specific: each game owns its own file. The
    build turns it into a changelog page right next to the game
-   (`games/<slug>/changelog.html`), linked from the game's card; there is no
+   (`games/<slug>/changelog.html`), linked just below the game's card; there is no
    site-wide changelog. Add a line under the top section describing what you did,
    written for a human reader. Newest entries at the top. A new game starts this
    file with its first entry.

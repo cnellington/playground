@@ -37,13 +37,13 @@
 const library = document.getElementById('library');
 
 function card(game) {
-  const wrap = document.createElement('div');
-  wrap.className = 'card';
+  const cell = document.createElement('div');
+  cell.className = 'cell';
 
-  // The art + title link to the game itself.
-  const main = document.createElement('a');
-  main.className = 'card-main';
-  main.href = game.path;
+  // The whole card links to the game, and nothing else.
+  const a = document.createElement('a');
+  a.className = 'card';
+  a.href = game.path;
 
   const art = document.createElement('div');
   art.className = 'card-art';
@@ -67,19 +67,19 @@ function card(game) {
   tg.textContent = game.tagline || '';
   body.append(h, tg);
 
-  main.append(art, body);
-  wrap.appendChild(main);
+  a.append(art, body);
+  cell.appendChild(a);
 
-  // A game's changelog lives right next to it; link to it from the card.
+  // The game's changelog is a separate link below the card.
   if (game.hasChangelog) {
     const cl = document.createElement('a');
-    cl.className = 'card-cl';
+    cl.className = 'game-cl';
     cl.href = game.path + 'changelog.html';
-    cl.textContent = "What's changed";
-    wrap.appendChild(cl);
+    cl.textContent = 'game changelog';
+    cell.appendChild(cl);
   }
 
-  return wrap;
+  return cell;
 }
 
 fetch('games.json')
