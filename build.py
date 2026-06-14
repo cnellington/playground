@@ -28,7 +28,7 @@ SITE_DIR = ROOT / "_site"
 
 # Fields every game.json must define. Keep this list short so the barrier to
 # adding a game stays low for non-technical contributors.
-REQUIRED_FIELDS = ["title", "slug", "tagline", "description", "authors", "added"]
+REQUIRED_FIELDS = ["title", "slug", "tagline", "description", "added"]
 ISO_DATE_LEN = len("YYYY-MM-DD")
 
 
@@ -65,10 +65,6 @@ def validate_game(game_dir: Path) -> dict | None:
         fail(f"{slug}: game.json slug '{meta.get('slug')}' must match folder name '{slug}'")
         ok = False
 
-    if not isinstance(meta.get("authors", []), list):
-        fail(f"{slug}: 'authors' must be a list, e.g. [\"Caleb\"]")
-        ok = False
-
     added = meta.get("added", "")
     if not (isinstance(added, str) and len(added) == ISO_DATE_LEN and added[4] == "-" and added[7] == "-"):
         fail(f"{slug}: 'added' must be an ISO date like 2026-06-13 (got '{added}')")
@@ -85,6 +81,13 @@ def validate_game(game_dir: Path) -> dict | None:
 
     # Surface the path the library page links to; keep manifest self-contained.
     meta["path"] = f"games/{slug}/"
+
+    # Per-game changelog: an optional changelog.md in the game's own folder. We
+    # inline it into the manifest so the changelog page is a single fetch and so
+    # each game owns its history (no shared file for contributors to collide on).
+    changelog_path = game_dir / "changelog.md"
+    meta["changelog"] = changelog_path.read_text().strip() if changelog_path.exists() else ""
+
     return meta
 
 
@@ -113,7 +116,7 @@ def build(manifests: list[dict]) -> None:
     SITE_DIR.mkdir()
 
     # Library shell + shared assets.
-    for name in ["index.html", "changelog.html", "CHANGELOG.md"]:
+    for name in ["index.html", "changelog.html"]:
         src = ROOT / name
         if src.exists():
             shutil.copy2(src, SITE_DIR / name)

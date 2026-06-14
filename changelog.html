@@ -6,35 +6,66 @@
 <title>Changelog — The Playground</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
 </head>
 <body>
   <header class="site-head">
-    <h1 class="logo"><a href="index.html">THE&nbsp;PLAYGROUND</a></h1>
-    <p class="tagline">what changed, and when</p>
+    <div class="logo"><a href="index.html">the <span class="mark">playground</span></a></div>
+    <span class="tagline">what changed, per game</span>
     <nav class="topnav">
-      <a href="index.html">← Back to games</a>
+      <a href="index.html">All games</a>
     </nav>
   </header>
 
   <main>
-    <article id="changelog" class="prose">
+    <section id="changelog" class="changelog-list">
       <p class="loading">Loading changelog…</p>
-    </article>
+    </section>
   </main>
 
 <script>
-/* Render the repo's CHANGELOG.md so there is a single source of truth: the file
-   contributors edit in their PR is exactly what shows up here. */
-fetch('CHANGELOG.md')
-  .then(r => r.text())
-  .then(md => {
-    document.getElementById('changelog').innerHTML = marked.parse(md);
+/* The changelog is game-specific: each game carries its own history in
+   games/<slug>/changelog.md, which build.py inlines into games.json. We render
+   one section per game so changes are grouped by the game they belong to. */
+const root = document.getElementById('changelog');
+
+function section(game) {
+  const wrap = document.createElement('article');
+  wrap.className = 'cl-game';
+
+  const h = document.createElement('h2');
+  const link = document.createElement('a');
+  link.href = game.path;
+  link.textContent = game.title;
+  h.appendChild(link);
+
+  const sub = document.createElement('p');
+  sub.className = 'cl-sub';
+  sub.textContent = game.tagline || '';
+
+  const body = document.createElement('div');
+  body.className = 'cl-body';
+  body.innerHTML = marked.parse(game.changelog);
+
+  wrap.append(h, sub, body);
+  return wrap;
+}
+
+fetch('games.json')
+  .then(r => r.json())
+  .then(games => {
+    const withLogs = games.filter(g => g.changelog && g.changelog.trim());
+    root.innerHTML = '';
+    if (!withLogs.length) {
+      root.innerHTML = '<p class="loading">No changelog entries yet.</p>';
+      return;
+    }
+    withLogs.forEach(g => root.appendChild(section(g)));
   })
   .catch(() => {
-    document.getElementById('changelog').innerHTML = '<p class="loading">Could not load the changelog.</p>';
+    root.innerHTML = '<p class="loading">Could not load the changelog.</p>';
   });
 </script>
 </body>

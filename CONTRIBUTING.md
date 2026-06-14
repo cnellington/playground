@@ -41,19 +41,19 @@ secret keys. If your idea needs those, the page cannot host it as-is.
 ```
 playground/
 ├── index.html          the front page (a grid of all games), generated, do not hand-edit the list
-├── changelog.html      shows CHANGELOG.md
-├── CHANGELOG.md         what changed, newest at the top
+├── changelog.html      shows each game's changelog, grouped by game
 ├── games/
 │   └── <your-game>/
 │       ├── index.html   your game
-│       ├── game.json    its title, description, author, etc.
+│       ├── game.json    its title, tagline, description, etc.
+│       ├── changelog.md what changed in this game (optional, newest at the top)
 │       └── thumbnail.png optional cover image
 └── build.py             assembles the site; CI runs it
 ```
 
-Each game is fully self-contained in its own folder. You only ever add or edit
-your own folder, plus one line in `CHANGELOG.md`. That is what keeps everyone's
-changes from colliding.
+Each game is fully self-contained in its own folder, including its own
+`changelog.md`. You only ever add or edit your own folder, so changes never
+collide with anyone else's.
 
 ## Doing it by hand (optional)
 
@@ -62,7 +62,7 @@ If you do want to do it yourself:
 1. `git checkout -b add-<your-game>`
 2. Create `games/<your-game>/index.html` (your game) and
    `games/<your-game>/game.json` (copy an existing one and edit the fields).
-3. Add a line to `CHANGELOG.md` under the top section.
+3. Add a line to `games/<your-game>/changelog.md` describing the change.
 4. Check it: `python3 build.py --check`
 5. Preview it locally:
    ```
