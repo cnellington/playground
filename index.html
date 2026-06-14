@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Playground — make games with friends</title>
-<meta name="description" content="A little arcade of web games we make for fun.">
+<title>The Playground</title>
+<meta name="description" content="A little arcade of web games.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
   <header class="site-head">
-    <h1 class="logo">THE&nbsp;PLAYGROUND</h1>
-    <p class="tagline">a little arcade of web games we make for fun</p>
+    <div class="logo">the <span class="mark">playground</span></div>
+    <span class="tagline">a little arcade of web games</span>
     <nav class="topnav">
       <a href="changelog.html">Changelog</a>
-      <a href="https://github.com/cnellington/playground">Add a game →</a>
+      <a href="https://github.com/cnellington/playground">Add a game</a>
     </nav>
   </header>
 
@@ -27,8 +27,8 @@
   </main>
 
   <footer class="site-foot">
-    <p>Built for fun. Anyone can add a game — see
-      <a href="https://github.com/cnellington/playground/blob/main/CONTRIBUTING.md">how to contribute</a>.</p>
+    Anyone can add a game. See
+    <a href="https://github.com/cnellington/playground/blob/main/CONTRIBUTING.md">how to contribute</a>.
   </footer>
 
 <script>
@@ -62,23 +62,7 @@ function card(game) {
   const tg = document.createElement('p');
   tg.className = 'card-tagline';
   tg.textContent = game.tagline || '';
-  const meta = document.createElement('p');
-  meta.className = 'card-meta';
-  const authors = (game.authors || []).join(', ');
-  meta.textContent = authors ? `by ${authors}` : '';
-  body.append(h, tg, meta);
-
-  if (game.tags && game.tags.length) {
-    const tags = document.createElement('div');
-    tags.className = 'card-tags';
-    game.tags.slice(0, 3).forEach(t => {
-      const span = document.createElement('span');
-      span.className = 'tag';
-      span.textContent = t;
-      tags.appendChild(span);
-    });
-    body.appendChild(tags);
-  }
+  body.append(h, tg);
 
   a.append(art, body);
   return a;

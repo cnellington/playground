@@ -8,6 +8,6 @@
 ## Checklist
 
 - [ ] My game lives in its own folder: `games/<my-game>/index.html`
-- [ ] It has a `games/<my-game>/game.json` (title, slug, tagline, description, authors, added date)
-- [ ] I added a line to `CHANGELOG.md` describing this change
+- [ ] It has a `games/<my-game>/game.json` (title, slug, tagline, description, added date)
+- [ ] I added a line to my game's `games/<my-game>/changelog.md` describing this change
 - [ ] I played the preview link (posted below) and it works

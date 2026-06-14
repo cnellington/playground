@@ -34,19 +34,19 @@ goes live. Merging to `main` publishes it.
      "slug": "snake-deluxe",
      "tagline": "the classic, now with hats",
      "description": "A one-sentence-to-a-paragraph summary of the game.",
-     "authors": ["Their Name"],
      "added": "2026-06-13"
    }
    ```
-   Optional: `"icon"` (an emoji shown if there is no thumbnail), `"thumbnail"`
-   (a PNG/JPG inside the game folder, used as the cover art, preferred), and
-   `"tags"` (a short list like `["arcade", "2-player"]`). The `slug` must match
-   the folder name. `added` is an ISO date (`YYYY-MM-DD`).
+   Optional: `"icon"` (an emoji shown if there is no thumbnail) and
+   `"thumbnail"` (a PNG/JPG inside the game folder, used as the cover art,
+   preferred). The `slug` must match the folder name. `added` is an ISO date
+   (`YYYY-MM-DD`). Do not add authorship or tags unless asked.
 
-4. Always update `CHANGELOG.md`. Add a line under the top section describing
-   what you did, prefixed with the game's slug (or `site:` for changes to the
-   library itself). New games and meaningful edits both get a line. This file is
-   what renders on the changelog page, so write it for a human reader.
+4. Keep a `games/<slug>/changelog.md` for the game and update it on every
+   change. The changelog is game-specific: each game owns its own file, and the
+   changelog page renders one section per game. Add a line under the top section
+   describing what you did, written for a human reader. Newest entries at the
+   top. A new game starts this file with its first entry.
 
 5. Never commit to `main` directly, and never merge with a merge commit. Work on
    a branch and open a pull request. We keep linear history and require the
@@ -58,7 +58,7 @@ goes live. Merging to `main` publishes it.
    fix.
 
 6. Do not touch other people's games. Your change should only add or edit the
-   one game folder it is about, plus the `CHANGELOG.md` line. Leave the rest
+   one game folder it is about, including its own `changelog.md`. Leave the rest
    alone.
 
 ## The workflow, start to finish
@@ -68,7 +68,7 @@ goes live. Merging to `main` publishes it.
 3. If the user gave you a screenshot or you can make one, save it as
    `games/<slug>/thumbnail.png` and reference it in `game.json`. Otherwise pick
    a fitting emoji for `"icon"`.
-4. Add a line to `CHANGELOG.md`.
+4. Add a line to `games/<slug>/changelog.md`.
 5. Check it builds: `python3 build.py --check` must pass (this is what CI runs).
 6. Commit, push the branch, and open a PR (`gh pr create`).
 7. Wait for the bot to post a preview link on the PR, then tell the user to play
