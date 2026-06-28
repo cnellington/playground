@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ZOOMIES — outrun the housemate</title>
+<title>ZOOMIES — outrun Mimi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
@@ -86,14 +86,14 @@
 <body>
 <div class="wrap">
   <h1 class="title">ZOOMIES</h1>
-  <div class="subtitle">outrun the housemate, mind the furniture</div>
+  <div class="subtitle">outrun Mimi, mind the furniture</div>
   <div class="frame" id="frame">
     <div class="screen">
       <canvas id="game" width="360" height="540"></canvas>
       <div class="mute" id="mute" title="sound">🔊</div>
       <div class="overlay show" id="ready">
         <h2>ZOOMIES</h2>
-        <p>The tortie has the zoomies.</p>
+        <p>Goma has the zoomies.</p>
         <p>Hop the junk. Don't get caught.</p>
         <div class="hint"><span class="key">SPACE</span> / tap to hop</div>
       </div>
@@ -322,7 +322,7 @@
   function px(x,y,w,h,c){ ctx.fillStyle=c; ctx.fillRect(x|0,y|0,w|0,h|0); }
 
   // bottom furniture: fills the column from y0 down to GROUND_Y (cap at the top/gap end)
-  function drawBottom(x, y0, type){
+  function drawBottom(x, y0, type, seed){
     const w = OB_W, h = GROUND_Y - y0;
     if(type==='boxes'){
       px(x,y0,w,h,'#c79a5e');
@@ -335,10 +335,15 @@
       px(x,y0,3,h,'#e6c389'); px(x+w-3,y0,3,h,'#9c6f38');
     } else if(type==='books'){
       const cols=['#b8453f','#3f72a6','#d8a93a','#5a8a51','#8a5a9c','#c97a3a'];
+      // Deterministic per-obstacle layout: seed a local PRNG so the spines keep
+      // the same heights and colors every frame (drawing with the shared rand()
+      // re-rolled them each frame, which looked like flickering rainbow boxes).
+      let s = (seed || 1) >>> 0;
+      const br = () => { s = (s*1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
       let yy=y0;
       while(yy<GROUND_Y){
-        const bh = 11 + ((rand()*9)|0);
-        const col = cols[(rand()*cols.length)|0];
+        const bh = 11 + ((br()*9)|0);
+        const col = cols[(br()*cols.length)|0];
         px(x,yy,w,Math.min(bh,GROUND_Y-yy),col);
         px(x,yy,w,2, 'rgba(0,0,0,.18)');      // spine shade
         px(x+w-8,yy+3,3,Math.max(1,bh-6),'rgba(255,255,255,.30)'); // title tick
@@ -464,7 +469,7 @@
     const gap = Math.max(132, GAP0 - score*1.4);
     const minC = gap/2 + 46, maxC = GROUND_Y - gap/2 - 24;
     const gy = minC + rand()*(maxC-minC);
-    obstacles.push({ x:W+10, gy, gap, btype:pick(BTYPES), ttype:pick(TTYPES), scored:false });
+    obstacles.push({ x:W+10, gy, gap, btype:pick(BTYPES), ttype:pick(TTYPES), scored:false, seed:(rand()*2147483647)>>>0 });
   }
   function die(){
     if(state!=='play') return;
@@ -555,7 +560,7 @@
 
     // obstacles
     for(const o of obstacles){
-      drawBottom(o.x, o.gy + o.gap/2, o.btype);
+      drawBottom(o.x, o.gy + o.gap/2, o.btype, o.seed);
       drawTop(o.x, o.gy - o.gap/2, o.ttype);
     }
 
