@@ -1,5 +1,15 @@
 [
   {
+    "title": "Zoomies",
+    "slug": "zoomies",
+    "tagline": "outrun the housemate, mind the furniture",
+    "description": "A flappy-bird-style dash starring a black tortie cat with a bad case of the zoomies. Tap or hit space to hop over the household junk \u2014 stacked boxes, bookshelves, houseplants, hanging lamps \u2014 while a wide-eyed lilac-point Siamese tears after you from the left. One crash and you're caught.",
+    "added": "2026-06-28",
+    "icon": "\ud83d\udc08\u200d\u2b1b",
+    "path": "games/zoomies/",
+    "hasChangelog": true
+  },
+  {
     "title": "Tarrytown",
     "slug": "tarrytown",
     "tagline": "A West Austin Critter Quest",
