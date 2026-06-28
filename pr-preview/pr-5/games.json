@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Zoomies",
+    "slug": "zoomies",
+    "tagline": "outrun the housemate, mind the furniture",
+    "description": "A flappy-bird-style dash starring a black tortie cat with a bad case of the zoomies. Tap or hit space to hop over the household junk \u2014 stacked boxes, bookshelves, houseplants, hanging lamps \u2014 while a wide-eyed lilac-point Siamese tears after you from the left. One crash and you're caught.",
+    "added": "2026-06-28",
+    "icon": "\ud83d\udc08\u200d\u2b1b",
+    "path": "games/zoomies/",
+    "hasChangelog": true
+  },
+  {
+    "title": "Tarrytown",
+    "slug": "tarrytown",
+    "tagline": "A West Austin Critter Quest",
+    "description": "A tiny Pokemon-style overworld and turn-based battler set in the live oaks and limestone of West Austin. Pick a starter on the porch, roam Tarrytown, befriend local critters with breakfast tacos, and earn the Tower Badge.",
+    "added": "2026-06-13",
+    "icon": "\ud83c\udf33",
+    "thumbnail": "thumbnail.png",
+    "path": "games/tarrytown/",
+    "hasChangelog": true
+  }
+]
